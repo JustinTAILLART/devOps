@@ -1,0 +1,33 @@
+#permet d'importer node qui excute les fichieer en javascript
+FROM node 
+
+#on créer un espace de trvail dans le conteneur 
+WORKDIR /app
+
+#on copie tout nos package json
+COPY package*.json ./
+
+#installe les dépendance des package json
+RUN npm install --production  
+
+#intsalle typscript et node sur notre conteneur
+RUN npm install typescript --save-dev
+RUN npm install @types/node --save-dev
+
+#on lance la commande qui permet d'initialiser le projet typescript 
+RUN npx tsc --init --rootDir src --outDir build --esModuleInterop --resolveJsonModule --lib es6 --module commonjs --allowJs true --noImplicitAny true
+
+#on copie le contenur du doisser source au dossier source de l'espace de travail
+COPY src ./src
+
+#on build le projet typescript 
+RUN npx tsc
+
+#CMD permet de mettre la première commande qui sera utilisé au lancement du cpnteneur 
+#et permet d'exécuter le programme 
+CMD node build/index.js
+
+#En suite on lance docker en fond. Dans le terminal on fait: 'docker build -t nom de l'image .'
+#Puis docker run -it --rm -p 8081:8080 -e PING_LISTEN_PORT=8080 tp2
+
+#Une fois le tout build on test si le tp1 marche avec la commande: curl 'http://localhost:8081/ping -v'

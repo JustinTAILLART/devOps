@@ -1,0 +1,39 @@
+#permet d'importer node qui excute les fichieer en javascript
+FROM node as builder
+
+#on créer un espace de trvail dans le conteneur 
+WORKDIR /app
+
+#on copie tout nos package json
+COPY package*.json ./
+
+#installe les dépendance des package json
+RUN npm install --production  
+
+#intsalle typscript et node sur notre conteneur
+RUN npm install typescript --save-dev
+RUN npm install @types/node --save-dev
+
+#on lance la commande qui permet d'initialiser le projet typescript 
+RUN npx tsc --init --rootDir src --outDir build --esModuleInterop --resolveJsonModule --lib es6 --module commonjs --allowJs true --noImplicitAny true
+
+#on copie le contenur du doisser source au dossier source de l'espace de travail
+COPY src ./src
+
+#on build le projet typescript 
+RUN npx tsc
+
+FROM node
+
+WORKDIR /app
+RUN mkdir build
+COPY --from=builder /app/build/index.js ./build
+
+COPY package*.json ./
+
+RUN npm install --production 
+
+#CMD permet de mettre la première commande qui sera utilisé au lancement du cpnteneur 
+#et permet d'exécuter le programme 
+CMD node build/index.js
+#CMD sh
