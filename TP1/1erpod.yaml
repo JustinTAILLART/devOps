@@ -1,0 +1,13 @@
+apiVersion: v1  # Version de l'API Kubernetes (v1 pour les Pods)
+kind: Pod  # Type d'objet Kubernetes, Pod
+
+metadata:  # Métadonnées du Pod
+  name: my-nginx-pod  # Nom du Pod
+  namespace: my-namespace  # Namespace dans lequel le Pod sera créé
+
+spec:  # Spécifications du Pod
+  containers:  # Définition des conteneurs à exécuter dans le Pod
+    - name: nginx  # Nom du conteneur
+      image: registry.cluster.wik.cloud/public/echo  # Image Docker utilisée pour ce conteneur
+      ports:  # Définition des ports exposés par le conteneur
+        - containerPort: 80  # Le conteneur expose le port 80

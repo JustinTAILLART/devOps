@@ -38,3 +38,6 @@ et dans un autre terminal on fait plusieur curl http://localhost:8081/ping
 
 On peut voir sur notre premier terminal qu'à chaque nouvel requête echange avec une de nos 4API
 
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+

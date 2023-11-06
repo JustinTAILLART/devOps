@@ -1,0 +1,27 @@
+apiVersion: apps/v1  # Version de l'API Kubernetes
+kind: ReplicaSet  # Type d'objet Kubernetes, un ReplicaSet pour gérer les réplicas des Pods
+
+metadata:  # Métadonnées du ReplicaSet
+  name: my-nginx-pod  # Nom du ReplicaSet
+  namespace: my-namespace  # Namespace dans lequel le ReplicaSet sera déployé
+
+spec:  # Spécifications du ReplicaSet
+  replicas: 4  # Nombre de réplicas à maintenir
+  selector:  # Sélecteur pour choisir les Pods à répliquer
+    matchLabels:  # Correspondance d'étiquettes
+      app: my-nginx-pod  # Les Pods à répliquer doivent avoir l'étiquette "app: my-nginx-pod"
+
+  template:  # Modèle de Pod pour les réplicas
+    metadata:  # Métadonnées du Pod modèle
+      labels:  # Étiquettes du Pod modèle
+        app: my-nginx-pod  # Étiquette "app" pour le Pod modèle
+
+    spec:  # Spécifications du Pod modèle
+      containers:  # Conteneurs à exécuter dans le Pod modèle
+      - name: nginx  # Nom du conteneur
+        image: registry.cluster.wik.cloud/public/echo  # Image Docker à utiliser pour le conteneur
+        env:  # Variables d'environnement pour le conteneur
+          - name: PING_LISTEN_PORT  # Nom de la variable d'environnement
+            value: "8080"  # Valeur de la variable d'environnement
+        ports:  # Ports exposés par le conteneur
+        - containerPort: 8080  # Port du conteneur (8080)

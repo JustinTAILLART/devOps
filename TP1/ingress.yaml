@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1  # Version de l'API Kubernetes
+kind: Ingress  # Type d'objet Kubernetes, Ingress pour gérer le trafic HTTP
+
+metadata:  # Métadonnées de l'Ingress
+  name: ingress  # Nom de l'Ingress
+  namespace: depl  # Namespace dans lequel l'Ingress sera déployé
+
+spec:  # Spécifications de l'Ingress
+  ingressClassName: nginx  # Classe de l'Ingress, utilisée pour gérer différents types d'Ingress
+
+  rules:  # Définition des règles de gestion du trafic
+    - host: amazon.fr  # Règle applicable lorsque l'hôte est "amazon.fr"
+      http:  # Gestion du trafic HTTP
+        paths:  # Définition des chemins d'accès
+          - pathType: Prefix  # Les chemins d'accès sont traités comme des préfixes
+            path: /  # Redirection de tous les chemins d'accès commençant par "/" 
+            backend:  # Service backend auquel le trafic est redirigé
+              service:  # Service utilisé comme backend
+                name: service  # Nom du service de destination
+                port:  # Numéro de port du service de destination
+                  number: 8080  # Port 8080

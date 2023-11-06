@@ -1,0 +1,17 @@
+apiVersion: v1  # Version de l'API Kubernetes
+kind: Service  # Type d'objet Kubernetes, Service pour exposer des applications
+
+metadata:  # Métadonnées du Service
+  name: service  # Nom du Service
+  namespace: depl  # Namespace dans lequel le Service sera déployé
+
+spec:  # Spécifications du Service
+  selector:  # Sélectionne les Pods associés au Service
+    app: depl  # Sélectionne les Pods avec l'étiquette "app: depl"
+
+  ports:  # Ports exposés par le Service
+    - protocol: TCP  # Protocole utilisé (TCP)
+      port: 8080  # Port exposé par le Service
+      targetPort: 8080  # Port sur lequel les Pods répondent
+
+  type: ClusterIP  # Type du Service, dans ce cas ClusterIP

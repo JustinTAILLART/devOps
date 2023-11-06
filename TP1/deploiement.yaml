@@ -1,0 +1,31 @@
+apiVersion: apps/v1  # Version de l'API Kubernetes
+kind: Deployment  # Type d'objet Kubernetes, Deployment pour gérer le déploiement d'applications
+
+metadata:  # Métadonnées du Deployment
+  name: my-nginx-pod  # Nom du Deployment
+  namespace: depl  # Namespace dans lequel le Deployment sera déployé
+
+spec:  # Spécifications du Deployment
+  replicas: 4  # Nombre de répliques (Pods) à maintenir
+  selector:  # Sélecteur de Pods à gérer
+    matchLabels:  # Correspondance basée sur les étiquettes
+      app: depl  # Les Pods doivent avoir l'étiquette "app: depl"
+
+  template:  # Modèle pour la création de Pods
+    metadata:  # Métadonnées du Pod
+      labels:  # Étiquettes du Pod
+        app: depl  # Étiquette "app: depl" pour les Pods créés
+    spec:  # Spécifications du Pod
+      containers:  # Conteneurs à exécuter dans le Pod
+        - name: nginx  # Nom du conteneur
+          image: registry.cluster.wik.cloud/public/echo  # Image Docker à utiliser
+          env:  # Variables d'environnement pour le conteneur
+            - name: PING_LISTEN_PORT
+              value: "8080"  # Variable d'environnement PING_LISTEN_PORT définie sur "8080"
+
+  strategy:  # Stratégie de mise à jour du Deployment
+    type: RollingUpdate  # Type de mise à jour roulante
+    rollingUpdate:  # Configuration de la mise à jour roulante
+      maxUnavailable: 50%  # Nombre maximal d'instances non disponibles pendant la mise à jour
+
+  
